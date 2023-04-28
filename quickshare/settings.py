@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -65,6 +66,11 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8000',
+    'http://localhost:3000',
 ]
 
 WSGI_APPLICATION = 'quickshare.wsgi.application'
