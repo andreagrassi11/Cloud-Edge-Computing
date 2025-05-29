@@ -18,11 +18,11 @@ docker-build:
   script:
     - docker-compose build
     - sleep 10
-    - docker tag quickshare_api "$DOCKER_IMAGE_NAME"
+    - docker tag quickshare_backend_web "$DOCKER_IMAGE_NAME"
     - docker push "$DOCKER_IMAGE_NAME"
     - |
       if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
-        docker tag quickshare_api "$CI_REGISTRY_IMAGE:latest"
+        docker tag quickshare_backend_web "$CI_REGISTRY_IMAGE:latest"
         docker push "$CI_REGISTRY_IMAGE:latest"
       fi
   rules:
