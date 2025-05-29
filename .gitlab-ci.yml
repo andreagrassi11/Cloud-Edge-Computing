@@ -49,5 +49,5 @@ docker-test:
     - curl --fail http://localhost:8000 || (echo "Container non risponde!" && exit 1)
     - docker stop test_app && docker rm test_app
 
-  only:
-    - main
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
