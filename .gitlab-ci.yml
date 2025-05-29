@@ -28,7 +28,7 @@ docker-build:
     - if: '$CI_COMMIT_BRANCH == "main"'
 
 docker-test:
-  image: docker:20.10.16
+  image: python:3.11-alpine #docker:20.10.16
   stage: test
   services:
     - docker:dind
