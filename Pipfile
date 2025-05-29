@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 django = "*"
+whitenoise = "*"
 gunicorn = "*"
 drf-extra-fields = "*"
 django-cors-headers = "*"
