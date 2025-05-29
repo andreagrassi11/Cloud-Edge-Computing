@@ -1,3 +1,4 @@
+from decouple import config
 from datetime import timedelta
 from pathlib import Path
 
@@ -9,19 +10,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-o2xwr+v6f=ri_ot4fd*&&^j5erz=33vjc(qova0=a6+2pw_p2*'
+SECRET_KEY = config('SECRET_KEY')
+#'django-insecure-o2xwr+v6f=ri_ot4fd*&&^j5erz=33vjc(qova0=a6+2pw_p2*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='', cast=lambda v: [s.strip() for s in v.split(',')])
 
 # Allow origin request
-CORS_ALLOW_ALL_ORIGIN = False
+CORS_ALLOW_ALL_ORIGIN = config('CORS_ALLOW_ALL_ORIGIN', default=False, cast=bool)
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000"
-]
+CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='', cast=lambda v: [s.strip() for s in v.split(',')])
+
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
@@ -103,7 +104,7 @@ WSGI_APPLICATION = 'quickshare.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / config('DATABASE_NAME', default='db.sqlite3'),
     }
 }
 

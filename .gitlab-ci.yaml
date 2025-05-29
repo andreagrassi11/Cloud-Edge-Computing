@@ -1,0 +1,31 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  DOCKER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH:latest
+
+# Usa Docker-in-Docker
+image: docker:latest
+
+services:
+  - docker:dind
+
+before_script:
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+
+build:
+  stage: build
+  script:
+    - docker build -t $DOCKER_IMAGE .
+    - docker push $DOCKER_IMAGE
+  only:
+    - main
+
+# deploy:
+#   stage: deploy
+#   script:
+#     - echo "Qui puoi fare deploy su AWS o altro"
+#   only:
+#     - main

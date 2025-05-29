@@ -5,12 +5,14 @@ name = "pypi"
 
 [packages]
 django = "*"
+gunicorn = "*"
 drf-extra-fields = "*"
 django-cors-headers = "*"
 psycopg2-binary = "*"
 djangorestframework-simplejwt = "*"
 django-rest-swagger = "*"
 python-levenshtein = "*"
+python-decouple = "*"
 
 [dev-packages]
 
