@@ -107,5 +107,6 @@ class ChatViewsTests(APITestCase):
         urls = reverse('chat', args=[int(self.user_id)])
         headers = {'HTTP_AUTHORIZATION': 'Bearer ' + self.access_token}
         response = self.client.get(urls, **headers)
+        print(response)
         self.assertEqual(response.status_code, 200)
         

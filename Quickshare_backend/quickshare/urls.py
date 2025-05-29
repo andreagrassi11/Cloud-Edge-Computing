@@ -6,4 +6,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('api-auth/', include('rest_framework.urls')),
     path('quickshare/', include(quickshare_urls)),
+    # try
 ]
