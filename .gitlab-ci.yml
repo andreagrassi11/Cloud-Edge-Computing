@@ -37,7 +37,8 @@ docker-test:
     DOCKER_TLS_CERTDIR: ""
   before_script:
     - apt-get update && apt-get install -y curl build-essential libpython3-dev
-    - pip install --upgrade pip setuptools wheel cython pipenv docker-compose
+    - pip install --upgrade pip
+    - pip install --upgrade setuptools wheel cython pipenv docker-compose
     - python -m venv venv
     - . venv/bin/activate
     - pipenv install --system --deploy --ignore-pipfile
