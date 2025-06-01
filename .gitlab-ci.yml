@@ -42,7 +42,7 @@ docker-test:
     - python -m venv venv
     - . venv/bin/activate
     - pip install pipenv
-    - 
+    - pipenv install
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
   script:
     - docker pull "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
@@ -53,4 +53,3 @@ docker-test:
     - docker compose down
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
-
