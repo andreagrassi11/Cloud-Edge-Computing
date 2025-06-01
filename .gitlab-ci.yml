@@ -28,9 +28,9 @@ docker-build:
     - if: '$CI_COMMIT_BRANCH == "main"'
 
 
-docker-build:
+docker-test:
   image: docker:20.10.16
-  stage: build
+  stage: test
   services:
     - docker:dind
   variables:
@@ -53,34 +53,4 @@ docker-build:
     - docker compose down
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
-
-
-
-docker-test:
-  image: python:3.11
-  stage: test
-  services:
-    - docker:dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_TLS_CERTDIR: ""
-  before_script:
-    - apt-get update && apt-get install -y curl build-essential libpython3-dev
-    - pip install --upgrade pip
-    - pip install --upgrade setuptools wheel cython pipenv docker-compose
-    - python -m venv venv
-    - . venv/bin/activate
-    - pipenv install
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-  script:
-    - docker pull "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
-    - docker compose up -d
-    - sleep 10
-    - docker ps -a
-    - curl --fail http://localhost:8000 || (echo "Container non risponde!" && exit 1)
-    - docker compose down
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-
-
 
