@@ -66,12 +66,10 @@ docker-test:
         echo "Container non è diventato healthy in tempo"
         docker ps -a
         docker logs quickshare_backend-web-1 || true
-        docker compose down
+        curl --fail http://localhost:8000 || (echo "Container non risponde!" && exit 1)
         exit 1
       fi
 
-    # Test endpoint
-    - curl --fail http://localhost:8000 || (echo "Container non risponde!" && exit 1)
 
     # Cleanup
     - docker compose down
