@@ -48,7 +48,7 @@ release:
           "Name": "'$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG'",
           "Update": "true"
         },
-        "Ports": [{"ContainerPort": 8000, "HostPort": 443}]
+        "Ports": [{"ContainerPort": 8000, "HostPort": 80}]
       }' > Dockerrun.aws.json
     - zip deploy.zip Dockerrun.aws.json
     - eb init QuickshareBack --platform docker --region "$AWS_DEFAULT_REGION"
