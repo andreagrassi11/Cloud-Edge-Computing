@@ -53,6 +53,6 @@ release:
     - zip deploy.zip Dockerrun.aws.json
     - eb init "$APP_NAME" --platform docker --region "$AWS_DEFAULT_REGION"
     - eb use QuickshareBack-env
-    - eb deploy --debug
+    - eb deploy
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
