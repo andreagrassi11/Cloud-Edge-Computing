@@ -50,7 +50,30 @@ docker-test:
     - docker compose up -d
     - sleep 10
     - docker ps -a
+     # Aspetta che il container sia healthy
+    - |
+      echo "Aspetto che il container sia healthy..."
+      for i in {1..15}; do
+        health=$(docker inspect --format='{{.State.Health.Status}}' quickshare_backend-web-1 2>/dev/null || echo "unknown")
+        echo "Stato: $health"
+        if [ "$health" = "healthy" ]; then
+          break
+        fi
+        sleep 5
+      done
+
+      if [ "$health" != "healthy" ]; then
+        echo "Container non è diventato healthy in tempo"
+        docker ps -a
+        docker logs quickshare_backend-web-1 || true
+        docker compose down
+        exit 1
+      fi
+
+    # Test endpoint
     - curl --fail http://localhost:8000 || (echo "Container non risponde!" && exit 1)
+
+    # Cleanup
     - docker compose down
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
