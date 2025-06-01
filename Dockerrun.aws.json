@@ -1,0 +1,17 @@
+{
+    "AWSEBDockerrunVersion": "1",
+    "Image": {
+      "Name": "registry.gitlab.com/andrea_grassi11/quickshare_backend:$TAG",
+      "Update": "true"
+    },
+    "Authentication": {
+      "Bucket": "elasticbeanstalk-eu-north-1-554949497273",
+      "Key": ".dockercfg"
+    },
+    "Ports": [
+      {
+        "ContainerPort": "8000"
+      }
+    ]
+  }
+  
