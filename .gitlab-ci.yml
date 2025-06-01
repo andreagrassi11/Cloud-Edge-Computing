@@ -45,10 +45,10 @@ release:
       echo '{
         "AWSEBDockerrunVersion": "1",
         "Image": {
-          "Name": "'$CI_REGISTRY_IMAGE'",
+          "Name": "'$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG'",
           "Update": "true"
         },
-        "Ports": [{"ContainerPort": 8000}]
+        "Ports": [{"ContainerPort": 8000, "HostPort": 443}]
       }' > Dockerrun.aws.json
     - zip deploy.zip Dockerrun.aws.json
     - eb init QuickshareBack --platform docker --region "$AWS_DEFAULT_REGION"
