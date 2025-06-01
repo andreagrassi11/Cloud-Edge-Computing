@@ -41,6 +41,7 @@ docker-test:
     - python -V
     - python -m venv venv
     - . venv/bin/activate
+    - pip install --upgrade pip
     - pip install pipenv
     - pipenv install
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
