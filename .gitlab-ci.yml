@@ -33,11 +33,11 @@ docker-test:
   services:
     - docker:dind
   before_script:
-    - python -m venv venv
-    - source venv/bin/activate
     - apk add --no-cache curl py3-pip
     - apk add --no-cache build-base python3-dev
     - pip install --upgrade pip setuptools wheel cython
+    - python -m venv venv
+    - source venv/bin/activate
     - pip install pipenv
     - pipenv install --system --deploy
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
