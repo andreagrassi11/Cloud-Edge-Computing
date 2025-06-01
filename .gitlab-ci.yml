@@ -52,7 +52,7 @@ release:
       }' > Dockerrun.aws.json
     - zip deploy.zip Dockerrun.aws.json
     - eb init "$APP_NAME" --platform docker --region "$AWS_DEFAULT_REGION"
-    - eb use QuickshareBack-env
+    - eb use Quickshare_backend_PROD
     - eb deploy --staged
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
