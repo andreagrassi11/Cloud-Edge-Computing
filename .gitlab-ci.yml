@@ -45,7 +45,7 @@ release:
       echo '{
         "AWSEBDockerrunVersion": "1",
         "Image": {
-          "Name": "'$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG'",
+          "Name": "'$CI_REGISTRY_IMAGE'",
           "Update": "true"
         },
         "Ports": [{"ContainerPort": 8000}]
