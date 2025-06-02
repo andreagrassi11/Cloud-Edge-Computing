@@ -10,5 +10,5 @@ services:
       - ./Quickshare_backend:/app  # Solo se vuoi montare i file locali
       - ./staticfiles:/app/staticfiles
     environment:
-      - DJANGO_SETTINGS_MODULE=quickshare.settings  # Solo se lo usi
+      - DJANGO_SETTINGS_MODULE=quickshare.settings
 

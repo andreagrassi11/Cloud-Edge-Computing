@@ -6,29 +6,33 @@ stages:
 variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
+  DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
 
+.default-before-script:
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+
+# Build
 docker-build:
   image: docker:20.10.16
   stage: build
   services:
     - docker:dind
-  variables:
-    DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-  before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  extends: .default-before-script
   script:
     - docker-compose build
     - docker tag quickshare_backend_web "$DOCKER_IMAGE_NAME"
     - docker push "$DOCKER_IMAGE_NAME"
     - |
-      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+      if [[ "$CI_COMMIT_BRANCH" == "main" ]]; then
         docker tag quickshare_backend_web "$CI_REGISTRY_IMAGE:latest"
         docker push "$CI_REGISTRY_IMAGE:latest"
       fi
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "dev"'
 
-#release
+# Deploy
 release:
   image: python:3.11
   stage: release
@@ -51,8 +55,16 @@ release:
         "Ports": [{"ContainerPort": 8000, "HostPort": 80}]
       }' > Dockerrun.aws.json
     - zip deploy.zip Dockerrun.aws.json
+    # Ambiente dinamico in base al branch
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "main" ]]; then
+        export EB_ENV_NAME="QuickshareBack-env" 
+      elif [[ "$CI_COMMIT_BRANCH" == "dev" ]]; then
+        export EB_ENV_NAME="QuickshareBack-uat-env"
+      fi
     - eb init QuickshareBack --platform docker --region "$AWS_DEFAULT_REGION"
-    - eb use QuickshareBack-env
+    - eb use "$EB_ENV_NAME"
     - eb deploy
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "dev"'
