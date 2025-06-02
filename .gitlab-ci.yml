@@ -28,6 +28,11 @@ docker-build:
         docker tag quickshare_backend_web "$CI_REGISTRY_IMAGE:latest"
         docker push "$CI_REGISTRY_IMAGE:latest"
       fi
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "dev" ]]; then
+        docker tag quickshare_backend_web "$CI_REGISTRY_IMAGE:latest"
+        docker push "$CI_REGISTRY_IMAGE:latest"
+      fi
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_COMMIT_BRANCH == "dev"'
