@@ -30,7 +30,8 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
-    "localhost"
+    "localhost",
+    "quickshareback-env.eba-xappmsx5.eu-north-1.elasticbeanstalk.com"
 ]
 
 CORS_ORIGIN_WHITELIST = [
