@@ -59,10 +59,12 @@ release:
     - |
       if [[ "$CI_COMMIT_BRANCH" == "main" ]]; then
         export EB_ENV_NAME="QuickshareBack-env" 
+        export EB_APP_NAME="QuickshareBack"
       elif [[ "$CI_COMMIT_BRANCH" == "dev" ]]; then
-        export EB_ENV_NAME="QuickshareBack-uat-env"
+        export EB_ENV_NAME="QuickshareBackUAT-env "
+        export EB_APP_NAME="QuickshareBackUAT"
       fi
-    - eb init QuickshareBack --platform docker --region "$AWS_DEFAULT_REGION"
+    - eb init "$EB_APP_NAME" --platform docker --region "$AWS_DEFAULT_REGION"
     - eb use "$EB_ENV_NAME"
     - eb deploy
   rules:
