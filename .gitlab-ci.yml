@@ -60,7 +60,7 @@ docker-test:
     - docker compose up -d
     - sleep 10
     - docker ps -a
-    - curl --fail http://localhost:80/ || (echo "L'app non ha risposto come atteso" && exit 1)
+    - curl --fail http://localhost/admin/ || (echo "L'app non ha risposto come atteso" && exit 1)
     - docker compose down
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
