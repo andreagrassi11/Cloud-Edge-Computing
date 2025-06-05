@@ -51,9 +51,11 @@ docker-test:
     - docker compose up -d
     - sleep 10
     - docker ps -a
+    - curl --fail http://localhost:80/ || (echo "L'app non ha risposto come atteso" && exit 1)
     - docker compose down
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "dev"'
 
 release:
   image: python:3.11
