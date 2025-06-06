@@ -32,11 +32,15 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
     "quickshareback-env.eba-xappmsx5.eu-north-1.elasticbeanstalk.com",
-    "quickshareback-uat-env.eba-xappmsx5.eu-north-1.elasticbeanstalk.com"
+    "quickshareback-uat-env.eba-xappmsx5.eu-north-1.elasticbeanstalk.com",
+    "quicksharebackuat-env.eba-fmtsknxh.eu-north-1.elasticbeanstalk.com"
 ]
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
+    "http://quickshareback-env.eba-xappmsx5.eu-north-1.elasticbeanstalk.com",
+    "http://quickshareback-uat-env.eba-xappmsx5.eu-north-1.elasticbeanstalk.com",
+    "http://quicksharebackuat-env.eba-fmtsknxh.eu-north-1.elasticbeanstalk.com"
 ]
 
 CORS_ALLOW_METHODS = (

@@ -7,7 +7,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./Quickshare_backend:/app  # Solo se vuoi montare i file locali
+      - ./Quickshare_backend:/app 
       - ./staticfiles:/app/staticfiles
     environment:
       - DJANGO_SETTINGS_MODULE=quickshare.settings
