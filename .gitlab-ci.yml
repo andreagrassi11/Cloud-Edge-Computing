@@ -79,10 +79,12 @@ release-prod:
     - export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
     - apt-get update && apt-get install -y zip
   script:
-    - if [[ "$CI_COMMIT_BRANCH" == "main" ]]; then
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "main" ]]; then
         TAG = "main"
       fi
-    - if [[ "$CI_COMMIT_BRANCH" == "dev" ]]; then
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "dev" ]]; then
         TAG = "dev"
       fi
     - |
