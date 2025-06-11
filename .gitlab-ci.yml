@@ -81,11 +81,11 @@ release-prod:
   script:
     - |
       if [[ "$CI_COMMIT_BRANCH" == "main" ]]; then
-        TAG = "main"
+        TAG="main"
       fi
     - |
       if [[ "$CI_COMMIT_BRANCH" == "dev" ]]; then
-        TAG = "dev"
+        TAG="dev"
       fi
     - |
       echo '{
