@@ -30,8 +30,8 @@ docker-build:
       fi
     - |
       if [[ "$CI_COMMIT_BRANCH" == "dev" ]]; then
-        docker tag quickshare_backend_web "$CI_REGISTRY_IMAGE:latest"
-        docker push "$CI_REGISTRY_IMAGE:latest"
+        docker tag quickshare_backend_web "$CI_REGISTRY_IMAGE:dev"
+        docker push "$CI_REGISTRY_IMAGE:dev"
       fi
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
@@ -80,47 +80,64 @@ release-prod:
     - apt-get update && apt-get install -y zip
   script:
     - |
-      echo '{
-        "AWSEBDockerrunVersion": "1",
-        "Image": {
-          "Name": "'$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG'",
-          "Update": "true"
-        },
-        "Ports": [{"ContainerPort": 8000, "HostPort": 80}]
-      }' > Dockerrun.aws.json
-    - zip deploy.zip Dockerrun.aws.json
-    - eb init QuickshareBack --platform docker --region "$AWS_DEFAULT_REGION"
-    - eb use QuickshareBack-env
-    - eb deploy
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-    
-# Deploy UAT
-release-uat:
-  image: python:3.11
-  stage: release
-  before_script:
-    - apt-get update && apt-get install -y python3-pip unzip curl git
-    - pip install --upgrade pip
-    - pip install awsebcli
-    - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-    - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-    - export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
-    - apt-get update && apt-get install -y zip
-  script:
+      if [[ "$CI_COMMIT_BRANCH" == "main" ]]; then
+        TAG="main"
+      fi
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "dev" ]]; then
+        TAG="dev"
+      fi
     - |
       echo '{
         "AWSEBDockerrunVersion": "1",
         "Image": {
-          "Name": "'$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG'",
+          "Name": "'$CI_REGISTRY_IMAGE:$TAG'",
           "Update": "true"
         },
         "Ports": [{"ContainerPort": 8000, "HostPort": 80}]
       }' > Dockerrun.aws.json
     - zip deploy.zip Dockerrun.aws.json
-    - eb init QuickshareBackUAT --platform docker --region "$AWS_DEFAULT_REGION"
-    - eb use QuickshareBackUAT-env
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "main" ]]; then
+        eb init QuickshareBack --platform docker --region "$AWS_DEFAULT_REGION"
+        eb use QuickshareBack-env
+      fi
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "dev" ]]; then
+        eb init QuickshareBackUAT --platform docker --region "$AWS_DEFAULT_REGION"
+        eb use QuickshareBackUAT-env
+      fi
     - eb deploy
   rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_COMMIT_BRANCH == "dev"'
+    
+# Deploy UAT
+# release-uat:
+#  image: python:3.11
+#  stage: release
+#  before_script:
+#    - apt-get update && apt-get install -y python3-pip unzip curl git
+#    - pip install --upgrade pip
+#    - pip install awsebcli
+#    - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+#    - export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
+#    - apt-get update && apt-get install -y zip
+#    - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+#  script:
+#    - |
+#      echo '{
+#        "AWSEBDockerrunVersion": "1",
+#        "Image": {
+#          "Name": "'$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG'",
+#          "Update": "true"
+#        },
+#        "Ports": [{"ContainerPort": 8000, "HostPort": 80}]
+#     }' > Dockerrun.aws.json
+#    - zip deploy.zip Dockerrun.aws.json
+#    - eb init QuickshareBackUAT --platform docker --region "$AWS_DEFAULT_REGION"
+#    - eb use QuickshareBackUAT-env
+#    - eb deploy
+#  rules:
+#    - if: '$CI_COMMIT_BRANCH == "dev"'
     
